@@ -29,10 +29,17 @@ public:
 
         out=new float*[constr[N-1]];
         for(int i=0;i<constr[N-1];i++)
-        out[i]=&(lr[N-1]->n[i].state);
+            out[i]=&(lr[N-1]->n[i].state);
 
 
     }
+
+    float reset_w()
+    {
+        for (int i=1;i<(N);i++)
+            lr[i]->reset_w();
+    }
+
     float** refresh(float* x)
     {
 

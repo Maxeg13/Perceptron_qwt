@@ -18,6 +18,15 @@ public:
     {
         return(act(x)*(1-act(x)));
     }
+
+//    virtual float act(float x)
+//    {
+//        return((1/(1+exp(-x))+0.5));
+//    }
+//    virtual float actDer(float x)
+//    {
+//        return(act0(x)*(1-act0(x)));
+//    }
     neuron()
     {
         //_____232
@@ -72,11 +81,18 @@ public:
             w=new float*[size_inp+1];
             for(int i=0;i<(size_inp+1);i++)
                 w[i]=new float[size];
-            for(int i=0;i<(size_inp+1);i++)
-                for(int j=0;j<size;j++)                    
-                    w[i][j]=((rand()%50)-25)/20.;
+
+            reset_w();
         }
     }
+
+    void reset_w()
+    {
+    for(int i=0;i<(size_inp+1);i++)
+        for(int j=0;j<size;j++)
+            w[i][j]=((rand()%50)-25)/20.;
+    }
+
     void set(float* x)
     {
         for (int i=0;i<size;i++)

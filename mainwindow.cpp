@@ -43,13 +43,22 @@ public:
     {
 
         timer->stop();
-        //        MouseP=invTransform(e->pos());
+        float k_x=1/1.5;
+        k_x*=k_x;
+        float k_y=1/.06;
+        k_y*=k_y;
         MouseP=invTransform(e->pos());
+//        MouseP=e->pos();
+//        qDebug()<<MouseP;
         float min=90000,minH;
         for(int j=0;j<dataL[0].size();j++)
-            if(min>(minH=((MouseP.x()-dataL[0][j])*(MouseP.x()-dataL[0][j])
-                          +(MouseP.y()-dataL[1][j])*(MouseP.y()-dataL[1][j]))))
+        {
+//            QPoint HELP=transform(QPoint(dataL[0][j],dataL[1][j]));
+            if(min>(minH=((MouseP.x()-dataL[0][j])*(MouseP.x()-dataL[0][j])*k_x
+                          +(MouseP.y()-dataL[1][j])*(MouseP.y()-dataL[1][j])*k_y)))
+//            if(min>(minH=QPointF::dotProduct((HELP-MouseP),(HELP-MouseP))))
             {min=minH;ind=j;}
+        }
         //        curveTest->drawing();
         curveLearn->drawing();
         //        qDebug()<<minH;
@@ -103,7 +112,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //d_plot->autoRefresh();
     d_plot->setAutoReplot();
     //_______232
-    d_plot->setAxisScale(QwtPlot::yLeft,-1.5,1.5);
+//    d_plot->setAxisScale(QwtPlot::yLeft,-1.5,1.5);
     // настройка функций
     d_picker =
             new MyQwtPlotPicker(
@@ -151,14 +160,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-    int testSize=40;
+    int testSize=45;
     dataTest.resize(2);
     dataTest[0].resize(testSize);
     dataTest[1].resize(testSize);
     float k=0.5;
     for(int i=0;i<dataTest[0].size();i++)
     {
-        dataTest[0][i]=((i-testSize/2)/200.)*k;
+        dataTest[0][i]=((i-testSize/2)/70.);
         //        dataTest[1][i]=cos(i/4.);
         perc->refresh(&dataTest[0][i]);
         dataTest[1][i]= perc->lr[PN-1]->n[0].state;
@@ -175,8 +184,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dataL[1].resize(learnSize);
     for(int i=0;i<dataL[0].size();i++)
     {
-        dataL[0][i]=((i-learnSize/2)/100.)*k;
-        dataL[1][i]=(sin(i/2.)+1)*.4;
+        dataL[0][i]=((i-learnSize/2)/70.*3);
+//        dataL[1][i]=(sin(i/2.))*.8;
+        dataL[1][i]= dataL[0][i]*(( dataL[0][i]>0)?1:(-1));
     }
     curveLearn=new myCurve(dataL,d_plot,"Target",QColor(0,0,0,0),Qt::red);
     curveLearn->drawing();
@@ -219,8 +229,8 @@ void MainWindow::test()
         }
     }
 
-    qDebug()<<freq_cnt;
-    freq_cnt=0;
+//    qDebug()<<freq_cnt;
+//    freq_cnt=0;
     curveTest->drawing();
 
     //    qDebug()<<i;
@@ -236,15 +246,17 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_clicked()//8
 {
-    delete[] perc;
-    vector<int> constr;
-    constr.push_back(1);
-    constr.push_back(8);
-    constr.push_back(8);
-    constr.push_back(1);
-    perc =new perceptron(constr);
+//    delete[] perc;
+//    vector<int> constr;
+//    constr.push_back(1);
+//    constr.push_back(8);
+//    constr.push_back(8);
+//    constr.push_back(1);
+//    perc =new perceptron(constr);
 
-    qDebug()<<perc->lr[1]->w[0][0];
+//    qDebug()<<perc->lr[1]->w[0][0];
+perc->reset_w();
+
 }
 
 void MainWindow::on_pushButton_2_clicked()//12
