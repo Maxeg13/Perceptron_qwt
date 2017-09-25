@@ -1,6 +1,6 @@
 #ifndef HEADERS_H
 #define HEADERS_H
-#include <QVector>
+#include <vector>
 #include <QTimer>
 #include <qwt_plot.h>
 #include <qwt_plot_grid.h>

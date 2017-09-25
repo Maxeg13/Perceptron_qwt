@@ -1,14 +1,15 @@
 #ifndef DRAWING_H
 #define DRAWING_H
 #include "headers.h"
+using namespace std;
 class myCurve:public QwtPlotCurve
 {
 public:
-    QVector<QVector<float>> &data;
+    vector<vector<float>> &data;
     QwtPlot* d_plot;
     QwtSymbol *symbol;
 
-    myCurve(QVector<QVector<float>> &dataH,QwtPlot* d_plotH,const QString &title,
+    myCurve(vector<vector<float>> &dataH,QwtPlot* d_plotH,const QString &title,
             const QColor &color, const QColor &colorSymbol):data(dataH)
     {
         d_plot=d_plotH;

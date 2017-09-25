@@ -1,17 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include <QVector>
 #include "drawing.h"
 #include <QMouseEvent>
 #include <QVBoxLayout>
 #include <QDebug>
 #include "headers.h"
 #include "perceptron.h"
-QVector<QVector<float>> dataTest;
-QVector<QVector<float>> dataL;
+#include <vector>
+using namespace std;
+
+vector<vector<float>> dataTest;
+vector<vector<float>> dataL;
 myCurve *curveLearn, *curveTest;
 QwtPlot *d_plot;
-
+int freq_cnt;
 QTimer *timer;
 int mode;
 perceptron* perc;
@@ -69,7 +71,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
 
 
-    QVector<int> constr;
+    vector<int> constr;
     constr.push_back(1);
     constr.push_back(8);
     constr.push_back(8);
@@ -149,13 +151,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
 
-
+    int testSize=40;
     dataTest.resize(2);
-    dataTest[0].resize(40);
-    dataTest[1].resize(40);
+    dataTest[0].resize(testSize);
+    dataTest[1].resize(testSize);
+    float k=0.5;
     for(int i=0;i<dataTest[0].size();i++)
     {
-        dataTest[0][i]=(i/200.);
+        dataTest[0][i]=((i-testSize/2)/200.)*k;
         //        dataTest[1][i]=cos(i/4.);
         perc->refresh(&dataTest[0][i]);
         dataTest[1][i]= perc->lr[PN-1]->n[0].state;
@@ -167,13 +170,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     dataL.resize(2);
-    int size=15;
-    dataL[0].resize(size);
-    dataL[1].resize(size);
+    int learnSize=15;
+    dataL[0].resize(learnSize);
+    dataL[1].resize(learnSize);
     for(int i=0;i<dataL[0].size();i++)
     {
-        dataL[0][i]=((i-size/2)/100.);
-        dataL[1][i]=sin(i/2.);
+        dataL[0][i]=((i-learnSize/2)/100.)*k;
+        dataL[1][i]=(sin(i/2.)+1)*.4;
     }
     curveLearn=new myCurve(dataL,d_plot,"Target",QColor(0,0,0,0),Qt::red);
     curveLearn->drawing();
@@ -197,9 +200,12 @@ void MainWindow::test()
 
     }
 
-    for(int j=0; j<500; j++)
+    for(int j=0; j<400; j++)
+    {
+        freq_cnt++;
         switch(mode)
         {
+
         case 0:
 
             for(int i=0;i<dataL[0].size();i++)
@@ -211,11 +217,12 @@ void MainWindow::test()
 
 
         }
+    }
 
-
+    qDebug()<<freq_cnt;
+    freq_cnt=0;
     curveTest->drawing();
-    static int i;
-    i++;
+
     //    qDebug()<<i;
     //    qDebug()<<perc->lr[2]->w[0][0];
 }
@@ -230,7 +237,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_pushButton_clicked()//8
 {
     delete[] perc;
-    QVector<int> constr;
+    vector<int> constr;
     constr.push_back(1);
     constr.push_back(8);
     constr.push_back(8);
@@ -243,7 +250,7 @@ void MainWindow::on_pushButton_clicked()//8
 void MainWindow::on_pushButton_2_clicked()//12
 {
     delete[] perc;
-    QVector<int> constr;
+    vector<int> constr;
     constr.push_back(1);
     constr.push_back(2);
     constr.push_back(12);
@@ -256,7 +263,7 @@ void MainWindow::on_pushButton_2_clicked()//12
 void MainWindow::on_pushButton_3_clicked()//2
 {
     delete[] perc;
-    QVector<int> constr;
+    vector<int> constr;
     constr.push_back(1);
     constr.push_back(3);
     constr.push_back(1);

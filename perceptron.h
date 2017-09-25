@@ -3,6 +3,8 @@
 #include "headers.h"
 #include "layer.h"
 #include <QDebug>
+#include <vector>
+using namespace std;
 class perceptron
 {
 public:
@@ -11,7 +13,7 @@ public:
     float **out;
     layer **lr;
     layer *lrh;
-    perceptron(QVector<int>& constr)
+    perceptron(vector<int>& constr)
     {
 
         N=constr.size();

@@ -56,7 +56,7 @@ public:
     }
     layer(int N,int mode,layer* l=NULL)
     {
-        a=0.6;
+        a=0.5;
         inLayer=l;
         size=N;
         switch(mode)
@@ -74,7 +74,7 @@ public:
                 w[i]=new float[size];
             for(int i=0;i<(size_inp+1);i++)
                 for(int j=0;j<size;j++)                    
-                    w[i][j]=((rand()%50)-25)/30.;
+                    w[i][j]=((rand()%50)-25)/20.;
         }
     }
     void set(float* x)
