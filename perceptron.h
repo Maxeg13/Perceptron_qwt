@@ -13,55 +13,13 @@ public:
     float **out;
     layer **lr;
     layer *lrh;
-    perceptron(vector<int>& constr)
-    {
+    perceptron(vector<int>& constr);
 
-        N=constr.size();
+    float reset_w();
 
-        lr=new layer*[N];
-        lrh=NULL;
-        for(int i=0;i<(N-1);i++)
-        {
-            lr[i]=new layer(constr[i],1,lrh);
-            lrh=lr[i];
-        }
-        lr[N-1]=new layer(constr[N-1],2,lrh);
+    float** refresh(float* x);
 
-        out=new float*[constr[N-1]];
-        for(int i=0;i<constr[N-1];i++)
-            out[i]=&(lr[N-1]->n[i].state);
-
-
-    }
-
-    float reset_w()
-    {
-        for (int i=1;i<(N);i++)
-            lr[i]->reset_w();
-    }
-
-    float** refresh(float* x)
-    {
-
-        lr[0]->set(x);
-        for(int i=1;i<N;i++)
-            lr[i]->refresh();
-
-        return out;
-    }
-
-    void learn1(float* x,float* t)
-    {
-        refresh(x);
-        lr[N-1]->getErr(t);
-        for(int i=(N-1);i>1;i--)
-        {
-            lr[i]->pushErr();
-        }
-        for(int i=1;i<N;i++)
-            lr[i]->refreshW();
-    }
-    void learnFunc()
-    {}
+    void learn1(float* x,float* t);
+    void learnFunc();
 };
 #endif // NET_H

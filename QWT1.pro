@@ -29,7 +29,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    layer.cpp \
+    perceptron.cpp
 
 HEADERS  += mainwindow.h \
     drawing.h \

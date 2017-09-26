@@ -82,9 +82,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     vector<int> constr;
     constr.push_back(1);
-    constr.push_back(8);
-    constr.push_back(8);
-    constr.push_back(1);
+    constr.push_back(5);
+    constr.push_back(5);
+    constr.push_back(1);//output
 
 
     perc =new perceptron(constr);
@@ -164,10 +164,10 @@ MainWindow::MainWindow(QWidget *parent) :
     dataTest.resize(2);
     dataTest[0].resize(testSize);
     dataTest[1].resize(testSize);
-    float k=0.5;
+    float k_x=2;
     for(int i=0;i<dataTest[0].size();i++)
     {
-        dataTest[0][i]=((i-testSize/2)/70.);
+        dataTest[0][i]=((i-testSize/2)/70.)*k_x;
         //        dataTest[1][i]=cos(i/4.);
         perc->refresh(&dataTest[0][i]);
         dataTest[1][i]= perc->lr[PN-1]->n[0].state;
@@ -184,9 +184,9 @@ MainWindow::MainWindow(QWidget *parent) :
     dataL[1].resize(learnSize);
     for(int i=0;i<dataL[0].size();i++)
     {
-        dataL[0][i]=((i-learnSize/2)/70.*3);
+        dataL[0][i]=((i-learnSize/2)/70.*3)*k_x;
 //        dataL[1][i]=(sin(i/2.))*.8;
-        dataL[1][i]= dataL[0][i]*(( dataL[0][i]>0)?1:(-1));
+        dataL[1][i]= (dataL[0][i]-0.5)*(( dataL[0][i]>0)?1:(-1));
     }
     curveLearn=new myCurve(dataL,d_plot,"Target",QColor(0,0,0,0),Qt::red);
     curveLearn->drawing();
